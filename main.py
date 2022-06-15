@@ -1,5 +1,7 @@
 import requests
 from credentials import *
+from twilio.rest import Client
+
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.5/onecall"
 api_key = jt_api_key
@@ -24,4 +26,12 @@ for hour_data in weather_slice:
        will_rain = True  
 
 if will_rain:
-    print("Bring an umbrella!")
+    client = Client(jt_account_sid, jt_auth_token)
+    message = client.messages \
+                .create(
+                     body="Hey JT, it is going to rain today. Make sure you bring your umbrella!",
+                     from_='+18596517102',
+                     to='+13143983570'
+                 )
+
+print(message.status)
